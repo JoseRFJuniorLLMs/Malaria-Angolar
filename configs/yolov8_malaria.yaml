@@ -1,0 +1,66 @@
+# YOLOv8 Malaria Detection Training Configuration
+# Optimized for clinical microscope field analysis
+
+model:
+  size: "n"  # n (nano), s (small), m (medium), l (large), x (xlarge)
+  num_classes: 1
+  pretrained: true
+
+data:
+  # Data configuration
+  data: data/yolo_malaria/malaria_data.yaml
+
+training:
+  epochs: 100
+  batch_size: 16
+  image_size: 640
+  learning_rate: 0.01
+  weight_decay: 0.0005
+  
+  # Early stopping and checkpointing
+  patience: 25
+  save_period: 10
+  
+  # Detection thresholds
+  conf_threshold: 0.25  # Confidence threshold for detection
+  iou_threshold: 0.7    # IoU threshold for NMS
+  
+  # Output directory
+  output_dir: "runs/detect"
+
+# Clinical validation parameters
+clinical:
+  # Parasite count thresholds for infection levels
+  low_threshold: 5      # <= 5 parasites = low infection
+  moderate_threshold: 20 # <= 20 parasites = moderate infection
+  # > 20 parasites = high infection
+  
+  # Minimum confidence for clinical reporting
+  min_confidence: 0.5
+  
+  # Target performance metrics
+  target_map50: 0.8     # Target mAP@0.5
+  target_precision: 0.85 # Target precision
+  target_recall: 0.90    # Target recall (high sensitivity)
+
+logging:
+  log_dir: "logs"
+  
+  # Wandb (optional)
+  use_wandb: false
+  wandb_project: "malaria-yolov8"
+
+# Data augmentation (conservative for medical images)
+augmentation:
+  hsv_h: 0.01    # Hue augmentation (minimal)
+  hsv_s: 0.5     # Saturation augmentation
+  hsv_v: 0.3     # Value/brightness augmentation
+  degrees: 5.0   # Rotation degrees (small)
+  translate: 0.05 # Translation fraction
+  scale: 0.1     # Scale augmentation
+  shear: 1.0     # Shear degrees (minimal)
+  perspective: 0.0 # Perspective augmentation (disabled)
+  flipud: 0.0    # Vertical flip probability (disabled)
+  fliplr: 0.5    # Horizontal flip probability
+  mosaic: 0.3    # Mosaic augmentation probability
+  mixup: 0.05    # Mixup augmentation probability

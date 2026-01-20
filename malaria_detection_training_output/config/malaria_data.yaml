@@ -1,0 +1,11 @@
+path: /content/yolo_malaria_pro
+train: train/images
+val: val/images
+test: test/images
+
+nc: 1
+names: ['malaria_parasite']
+
+# Stats
+total_images: 27558
+converted_on: 2025-08-27T09:17:33.120831
